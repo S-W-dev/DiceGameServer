@@ -33,8 +33,8 @@ io.on('connection', (socket) => {
 
 });
 
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+http.listen(666, () => {
+  console.log('listening on *:666');
 });
 
 function makeid(length) {
