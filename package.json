@@ -1,0 +1,23 @@
+{
+  "name": "dicegameserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S-W-dev/DiceGameServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S-W-dev/DiceGameServer/issues"
+  },
+  "homepage": "https://github.com/S-W-dev/DiceGameServer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^3.1.1"
+  }
+}
