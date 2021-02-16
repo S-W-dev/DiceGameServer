@@ -4,15 +4,6 @@ const WebSocket = require('ws');
 
 const ws = new WebSocket.Server({port: 667});
 
-ws.on('connection', function open() {
-  ws.send('something');
-	console.log("open")
-});
-
-ws.on('message', function incoming(data) {
-  console.log(data);
-});
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
@@ -40,14 +31,16 @@ class Room {
 
 }
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-// 	var room;
-// 	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
+ws.on('connection', (socket) => {
+  console.log('a user connected');
+	var room;
+	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
 
-// 	room.addPlayer(socket);
+	room.addPlayer(socket);
 
-// });
+	console.table(rooms);
+
+});
 
 http.listen(666, () => {
   console.log('listening on *:666');
