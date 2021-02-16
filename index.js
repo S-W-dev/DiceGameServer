@@ -6,6 +6,7 @@ const ws = new WebSocket('ws://concretegames.net:666/socket');
 
 ws.on('open', function open() {
   ws.send('something');
+	console.log("open")
 });
 
 ws.on('message', function incoming(data) {
