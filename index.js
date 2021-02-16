@@ -1,5 +1,16 @@
 const app = require('express')();
 const http = require('http').createServer(app);
+const WebSocket = require('ws');
+
+const ws = new WebSocket('ws://concretegames.net:666/socket');
+
+ws.on('open', function open() {
+  ws.send('something');
+});
+
+ws.on('message', function incoming(data) {
+  console.log(data);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
