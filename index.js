@@ -1,6 +1,15 @@
 const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http').createServer(app);
+const io = require('socket.io')({
+  path: '/test',
+  serveClient: false,
+});
+
+io.attach(http, {
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  cookie: false
+});
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
