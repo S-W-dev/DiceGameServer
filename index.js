@@ -1,7 +1,7 @@
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')({
-  path: '/test',
+  path: '/socket',
   serveClient: false,
 });
 
