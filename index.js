@@ -6,6 +6,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/webhook', (req, res) => {
+process.exit();
+});
+
 var rooms = [];
 
 class Room {
