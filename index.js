@@ -2,9 +2,9 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://concretegames.net:666/socket');
+const ws = new WebSocket.Server({port: 666});
 
-ws.on('open', function open() {
+ws.on('connection', function open() {
   ws.send('something');
 	console.log("open")
 });
