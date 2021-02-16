@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-const ws = new WebSocket.Server({port: 666});
+const ws = new WebSocket.Server({port: 667});
 
 ws.on('connection', function open() {
   ws.send('something');
