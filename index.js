@@ -27,6 +27,7 @@ class Room {
 	addPlayer(socket) {
 		this.players.push(socket);
 		socket.emit("connected");
+		console.table(this.players);
 	}
 
 }
@@ -35,6 +36,8 @@ ws.on('connection', (socket) => {
   console.log('a user connected');
 	var room;
 	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
+
+	rooms.push(room);
 
 	room.addPlayer(socket);
 
