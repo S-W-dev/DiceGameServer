@@ -1,15 +1,5 @@
 const app = require('express')();
 const http = require('http').createServer(app);
-const io = require('socket.io')({
-  path: '/socket',
-  serveClient: false,
-});
-
-io.attach(http, {
-  pingInterval: 10000,
-  pingTimeout: 5000,
-  cookie: false
-});
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -38,14 +28,14 @@ class Room {
 
 }
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-	var room;
-	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+// 	var room;
+// 	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
 
-	room.addPlayer(socket);
+// 	room.addPlayer(socket);
 
-});
+// });
 
 http.listen(666, () => {
   console.log('listening on *:666');
