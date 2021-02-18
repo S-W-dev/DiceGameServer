@@ -28,7 +28,9 @@ class Room {
 		this.players.push(socket);
 		socket.send("connected");
 		//console.table(this.players);
-		socket.on("Hello", data => console.log(data))
+		ws.on('Hello', function incoming(message) {
+    console.log('received: %s', message);
+  });
 	}
 
 }
