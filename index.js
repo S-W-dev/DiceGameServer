@@ -35,10 +35,12 @@ class Room {
 ws.on('connection', (socket) => {
   console.log('a user connected');
 	var room;
-	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) room = new Room(makeid(5))
+	if (rooms.length == 0 || rooms[rooms.length-1].players.length >= rooms[rooms.length-1].maxRoomLength) {
+		room = new Room(makeid(5))
+		rooms.push(room);
+	}
 	else room = rooms.filter(room => {return room.players.length < room.maxRoomLength})[0];
 
-	rooms.push(room);
 
 	room.addPlayer(socket);
 
