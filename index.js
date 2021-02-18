@@ -27,7 +27,7 @@ class Room {
 	addPlayer(socket) {
 		this.players.push(socket);
 		socket.emit("connected");
-		console.table(this.players);
+		//console.table(this.players);
 	}
 
 }
