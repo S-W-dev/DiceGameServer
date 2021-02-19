@@ -28,7 +28,6 @@ class Player {
 	constructor(socket, room) {
 		this.socket = socket;
 		this.room = room;
-		console.log(rooms[this.room]);
 		this.id = rooms[this.room].players.length || 0;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
@@ -66,7 +65,6 @@ class Player {
 			JSON.stringify({
 				type: "player_update",
 				player: {
-					room: rooms[this.room],
 					id: this.id,
 					name: this.name,
 					status: this.status,
@@ -162,7 +160,7 @@ class Room {
 			socket.send(
 			JSON.stringify({
 				roll: this.roll,
-				players: this.rooms[this.room].players
+				players: this.players
 			})
 		);
 		})
