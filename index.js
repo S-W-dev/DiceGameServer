@@ -15,13 +15,12 @@ app.post('/webhook', (req, res) => {
 
 var rooms = [];
 
-class PlayerStatus { 
-	constructor() {}
-}
+class PlayerStatus { }
 PlayerStatus.prototype.BETTING = "betting";
 PlayerStatus.prototype.WAITING = "waiting";
 PlayerStatus.prototype.LOST = "lost";
 PlayerStatus.prototype.WON = "won";
+PlayerStatus.prototype.WON_BET = "won_bet";
 PlayerStatus.prototype.CONNECTING = "connecting";
 PlayerStatus.prototype.DISCONNECTED = "disconnected";
 
@@ -29,33 +28,42 @@ class Player {
 	constructor(socket, room) {
 		this.socket = socket;
 		this.room = room;
-		this.id = room.players.length;
+		this.id = room.players.length-1;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
+		this.bet = 0;
+		this.hasBet = false;
 		
 		this.timeout = 0;
 
 		socket.send("connected");
 
 		socket.on('message', this.handleClientMessage);
+		socket.on('close', this.room.players.splice(this.id, 1));
+
 	}
 
 	handleClientMessage(message) {
 		console.log('received: %s', message); //temporary
 	}
 
+	setStatus(status) {
+		this.status = status;
+	}
+
 	Update() {
 		socket.send(
 			JSON.stringify({
-				type: "update",
-				content: {
+				type: "player_update",
+				player: {
 					room: this.room,
 					id: this.id,
 					name: this.name,
 					status: this.status,
 					money: this.money
-				}
+				},
+				players: this.room.players
 			})
 		);
 	}
@@ -71,6 +79,8 @@ class Room {
 
 		this.players = [];
 
+		this.roll = 0;
+
 		setInterval(this.gameLoop, 1000);
 
 	}
@@ -79,19 +89,47 @@ class Room {
 
 		if (this.players >= minPlayers && this.players <= maxPlayers) {
 
-			//player logic
+			//wait for all players to bet
+			while (!haveAllPlayersBet()) {
+				this.players.forEach(player => {
+					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
+					else player.setStatus(PlayerStatus.BETTING);
+					player.Update();
+				});
+			}
+
+			//roll the dice
+			let dice = ~~(Math.random() * 6) + 1;
+
+			this.Update();
+
+			//determine outcome for each player
+			let losses = 0;
+			let winners = [];
 			this.players.forEach((player, index) => {
-				player.socket.on('close', () => {
-					player.status = PlayerStatus.DISCONNECTED;
-					if (player.timeout >= 30 && player.status == PlayerStatus.DISCONNECTED) return players.splice(index, 1);
-					player.timeout++;
-				})
+
+			if (player.bet != dice) {
+				setPlayerStatus(player, PlayerStatus.LOST);
+				player.money -= player.bet;
+				losses += player.bet;
+				player.Update();
+			}
+
+			if (player.bet == dice) {
+				setPlayerStatus(player, PlayerStatus.WON);
+				winners.push(player);
+			}
+			});
+
+			winners.forEach(player => {
+				player.money += ~~(losses / winners.length)
+				player.Update();
 			});
 
 		}
 
-		function setPlayerStatus(player, status) {
-			player.status = status;
+		function haveAllPlayersBet() {
+			return this.players.filter(player => {return !player.hasBet}).length == 0
 		}
 
 	}
@@ -99,6 +137,14 @@ class Room {
 	addPlayer(socket) {
 		let player = new Player(socket);
 		this.players.push(player);
+	}
+
+	Update() {
+		socket.send(
+			JSON.stringify({
+				roll: this.roll;
+			})
+		);
 	}
 
 }
