@@ -151,7 +151,7 @@ class Room {
 
 	addPlayer(socket) {
 		let player = new Player(socket);
-		this.players.push(player, this);
+		this.players.push(player, this.room);
 	}
 
 	Update() {
@@ -170,6 +170,7 @@ ws.on('connection', (socket) => {
 	var room;
 	if (rooms.length == 0 || rooms[rooms.length - 1].players.length >= rooms[rooms.length - 1].maxPlayers) {
 		room = new Room(makeid(5))
+		room.room = room;
 		rooms.push(room);
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
