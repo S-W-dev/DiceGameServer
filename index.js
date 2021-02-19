@@ -28,7 +28,7 @@ class Player {
 	constructor(socket, room) {
 		this.socket = socket;
 		this.room = room;
-		this.id = room.players.length-1;
+		this.id = this.room.players.length-1;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
@@ -151,7 +151,7 @@ class Room {
 
 	addPlayer(socket) {
 		let player = new Player(socket);
-		this.players.push(player);
+		this.players.push(player, this);
 	}
 
 	Update() {
