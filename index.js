@@ -34,13 +34,13 @@ class Player {
 		this.money = 10000;
 		this.bet = 0;
 		this.hasBet = false;
-		
+
 		socket.send("connected");
 
 		console.log("New player is " + this.status);
 
-		socket.on('message', (data)=>this.handleClientMessage(data));
-		socket.on('close', ()=>this.leaveGame());
+		socket.on('message', (data) => this.handleClientMessage(data));
+		socket.on('close', () => this.leaveGame());
 
 	}
 
@@ -97,7 +97,7 @@ class Room {
 
 		this.running = true;
 
-		setInterval((THIS=this) => {THIS.gameLoop()}, 1000);
+		setInterval((THIS = this) => { THIS.gameLoop() }, 1000);
 
 	}
 
@@ -107,7 +107,7 @@ class Room {
 
 		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
 
-			if (this.players.filter(player => {return player.status != PlayerStatus.LOST}).length <= 1) running = false;
+			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
 
 			//wait for all players to bet
 			while (!haveAllPlayersBet()) {
@@ -126,20 +126,20 @@ class Room {
 			//determine outcome for each player
 			let losses = 0;
 			let winners = [];
-			this.players.filter(player => {return player.status != PlayerStatus.LOST}).forEach((player, index) => {
+			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
 
-			if (player.bet != dice) {
-				setPlayerStatus(player, PlayerStatus.LOST_BET);
-				player.money -= player.bet;
-				losses += player.bet;
-				if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
-				player.Update();
-			}
+				if (player.bet != dice) {
+					setPlayerStatus(player, PlayerStatus.LOST_BET);
+					player.money -= player.bet;
+					losses += player.bet;
+					if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
+					player.Update();
+				}
 
-			if (player.bet == dice) {
-				setPlayerStatus(player, PlayerStatus.WON_BET);
-				winners.push(player);
-			}
+				if (player.bet == dice) {
+					setPlayerStatus(player, PlayerStatus.WON_BET);
+					winners.push(player);
+				}
 
 			});
 
@@ -148,12 +148,12 @@ class Room {
 				player.Update();
 			});
 
-		}
+		} else if (this.players.length <= 0) rooms.splice(rooms.indexOf(this), 1);
 
 		this.Update();
 
 		function haveAllPlayersBet() {
-			return this.players.filter(player => {return !player.hasBet}).length == 0
+			return this.players.filter(player => { return !player.hasBet }).length == 0
 		}
 
 	}
@@ -165,17 +165,17 @@ class Room {
 
 	Update() {
 		let players = [];
-		this.players.forEach(({socket, ...rest} = player) => {
+		this.players.forEach(({ socket, ...rest } = player) => {
 			players.push(rest);
 		});
-		this.players.forEach(({socket , ...rest} = player) => {
+		this.players.forEach(({ socket, ...rest } = player) => {
 			socket.send(
-			JSON.stringify({
-				player: rest,
-				roll: this.roll,
-				players: players
-			})
-		);
+				JSON.stringify({
+					player: rest,
+					roll: this.roll,
+					players: players
+				})
+			);
 		})
 	}
 
@@ -201,11 +201,11 @@ http.listen(666, () => {
 });
 
 function makeid(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+	var result = '';
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = characters.length;
+	for (var i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
 }
