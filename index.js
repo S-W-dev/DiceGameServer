@@ -50,7 +50,20 @@ class Player {
 
 	handleClientMessage(message) {
 		if (message == "connected") this.setStatus(PlayerStatus.WAITING);
-		else console.log('received: %s', message);
+		else {
+			try {
+				message = JSON.parse(message);
+				if (message.type == "bet") {
+					if (message.bet <= this.money && message.bet >= 100 && message.choice <=6 && message.choice >= 1) {
+						this.bet = message.bet;
+						this.choice = message.choice;
+						this.hasBet = true;
+					} //we need to send an error message here
+				}
+			} catch (x) {
+				console.log('received: %s', message);
+			}
+		}
 	}
 
 	setStatus(status) {
@@ -61,6 +74,7 @@ class Player {
 	resetPlayer() {
 		this.money = 10000;
 		this.bet = 0;
+		this.choice = 0;
 		this.hasBet = false;
 	}
 
@@ -126,7 +140,7 @@ class Room {
 			let winners = [];
 			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
 
-				if (player.bet != dice) {
+				if (player.choice != dice) {
 					setPlayerStatus(player, PlayerStatus.LOST_BET);
 					player.money -= player.bet;
 					losses += player.bet;
@@ -134,7 +148,7 @@ class Room {
 					player.Update();
 				}
 
-				if (player.bet == dice) {
+				if (player.choice == dice) {
 					setPlayerStatus(player, PlayerStatus.WON_BET);
 					winners.push(player);
 				}
@@ -145,6 +159,18 @@ class Room {
 				player.money += ~~(losses / winners.length)
 				player.Update();
 			});
+
+			// this.players.forEach(player => {
+
+			// });
+
+		} else if (running == false) {
+
+			this.players.forEach(player => {
+				if (player.status == PlayerStatus.LOST) player.resetPlayer();
+			});
+
+			running = true;
 
 		} else if (this.players.length <= 0) rooms.splice(rooms.indexOf(this), 1);
 
