@@ -35,13 +35,15 @@ class Player {
 		this.bet = 0;
 		this.hasBet = false;
 		
-		this.timeout = 0;
-
 		socket.send("connected");
 
 		socket.on('message', this.handleClientMessage);
-		socket.on('close', this.room.players.splice(this.id, 1));
+		socket.on('close', this.leaveGame);
 
+	}
+
+	leaveGame() {
+		this.room.players.splice(this.id, 1);
 	}
 
 	handleClientMessage(message) {
@@ -49,7 +51,13 @@ class Player {
 	}
 
 	setStatus(status) {
-		this.status = status;
+		if (this.status != PlayerStatus.LOST) this.status = status;
+	}
+
+	resetPlayer() {
+		this.money = 10000;
+		this.bet = 0;
+		this.hasBet = false;
 	}
 
 	Update() {
@@ -62,8 +70,7 @@ class Player {
 					name: this.name,
 					status: this.status,
 					money: this.money
-				},
-				players: this.room.players
+				}
 			})
 		);
 	}
@@ -81,13 +88,17 @@ class Room {
 
 		this.roll = 0;
 
+		this.running = true;
+
 		setInterval(this.gameLoop, 1000);
 
 	}
 
 	gameLoop() {
 
-		if (this.players >= minPlayers && this.players <= maxPlayers) {
+		if (this.players >= minPlayers && this.players <= maxPlayers && this.running) {
+
+			if (this.players.filter(player => {return player.status != PlayerStatus.LOST}).length <= 1) running = false;
 
 			//wait for all players to bet
 			while (!haveAllPlayersBet()) {
@@ -106,19 +117,21 @@ class Room {
 			//determine outcome for each player
 			let losses = 0;
 			let winners = [];
-			this.players.forEach((player, index) => {
+			this.players.filter(player => {return player.status != PlayerStatus.LOST}).forEach((player, index) => {
 
 			if (player.bet != dice) {
-				setPlayerStatus(player, PlayerStatus.LOST);
+				setPlayerStatus(player, PlayerStatus.LOST_BET);
 				player.money -= player.bet;
 				losses += player.bet;
+				if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
 				player.Update();
 			}
 
 			if (player.bet == dice) {
-				setPlayerStatus(player, PlayerStatus.WON);
+				setPlayerStatus(player, PlayerStatus.WON_BET);
 				winners.push(player);
 			}
+
 			});
 
 			winners.forEach(player => {
@@ -142,7 +155,8 @@ class Room {
 	Update() {
 		socket.send(
 			JSON.stringify({
-				roll: this.roll
+				roll: this.roll,
+				players: this.room.players
 			})
 		);
 	}
