@@ -40,7 +40,6 @@ class Player {
 		console.log("New player is " + this.status);
 
 		socket.on('message', (data)=>this.handleClientMessage(data));
-		socket.on('connected', ()=>this.setStatus(PlayerStatus.WAITING));
 		socket.on('close', ()=>this.leaveGame());
 
 	}
@@ -53,6 +52,9 @@ class Player {
 
 	handleClientMessage(message) {
 		console.log('received: %s', message); //temporary
+		if (message == "connected") {
+			this.setStatus(PlayerStatus.WAITING);
+		}
 	}
 
 	setStatus(status) {
@@ -169,6 +171,7 @@ class Room {
 		this.players.forEach(({socket} = player) => {
 			socket.send(
 			JSON.stringify({
+				player: ({socket, ..rest} = player)=>{return rest}
 				roll: this.roll,
 				players: players
 			})
