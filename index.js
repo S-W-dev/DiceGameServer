@@ -16,13 +16,13 @@ app.post('/webhook', (req, res) => {
 var rooms = [];
 
 class PlayerStatus { }
-PlayerStatus.prototype.BETTING = "betting";
-PlayerStatus.prototype.WAITING = "waiting";
-PlayerStatus.prototype.LOST = "lost";
-PlayerStatus.prototype.WON = "won";
-PlayerStatus.prototype.WON_BET = "won_bet";
-PlayerStatus.prototype.CONNECTING = "connecting";
-PlayerStatus.prototype.DISCONNECTED = "disconnected";
+PlayerStatus.BETTING = "betting";
+PlayerStatus.WAITING = "waiting";
+PlayerStatus.LOST = "lost";
+PlayerStatus.WON = "won";
+PlayerStatus.WON_BET = "won_bet";
+PlayerStatus.CONNECTING = "connecting";
+PlayerStatus.DISCONNECTED = "disconnected";
 
 class Player {
 	constructor(socket, room) {
