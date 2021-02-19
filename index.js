@@ -37,15 +37,15 @@ class Player {
 		
 		socket.send("connected");
 
-		socket.on('message', (data, THIS=this)=>{this.handleClientMessage()});
-		socket.on('close', (data, THIS=this)=>{this.leaveGame()});
+		socket.on('message', (data)=>{this.handleClientMessage(data)});
+		socket.on('close', ()=>{this.leaveGame()});
 
 	}
 
 	leaveGame() {
-		console.log(this.room);
+		//console.log(this.room);
 		rooms[this.room].players.splice(this.id, 1);
-		console.table(rooms);
+		//console.table(rooms);
 	}
 
 	handleClientMessage(message) {
@@ -97,7 +97,7 @@ class Room {
 
 	gameLoop() {
 
-		console.log(this);
+		//console.log(this);
 
 		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
 
