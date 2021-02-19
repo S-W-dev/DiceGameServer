@@ -49,10 +49,8 @@ class Player {
 	}
 
 	handleClientMessage(message) {
-		console.log('received: %s', message); //temporary
-		if (message == "connected") {
-			this.setStatus(PlayerStatus.WAITING);
-		}
+		if (message == "connected") this.setStatus(PlayerStatus.WAITING);
+		else console.log('received: %s', message);
 	}
 
 	setStatus(status) {
