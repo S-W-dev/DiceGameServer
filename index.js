@@ -91,21 +91,21 @@ class Room {
 
 		this.running = true;
 
-		setInterval(this.gameLoop, 1000);
+		setInterval(this.gameLoop(this), 1000);
 
 	}
 
-	gameLoop() {
+	gameLoop(THIS) {
 
-		console.log(this);
+		console.log(THIS);
 
-		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
+		if (THIS.players >= THIS.minPlayers && THIS.players <= maxPlayers && THIS.running) {
 
-			if (this.players.filter(player => {return player.status != PlayerStatus.LOST}).length <= 1) running = false;
+			if (THIS.players.filter(player => {return player.status != PlayerStatus.LOST}).length <= 1) running = false;
 
 			//wait for all players to bet
 			while (!haveAllPlayersBet()) {
-				this.players.forEach(player => {
+				THIS.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
 					player.Update();
@@ -115,12 +115,12 @@ class Room {
 			//roll the dice
 			let dice = ~~(Math.random() * 6) + 1;
 
-			this.Update();
+			THIS.Update();
 
 			//determine outcome for each player
 			let losses = 0;
 			let winners = [];
-			this.players.filter(player => {return player.status != PlayerStatus.LOST}).forEach((player, index) => {
+			THIS.players.filter(player => {return player.status != PlayerStatus.LOST}).forEach((player, index) => {
 
 			if (player.bet != dice) {
 				setPlayerStatus(player, PlayerStatus.LOST_BET);
@@ -145,10 +145,10 @@ class Room {
 		}
 
 		function haveAllPlayersBet() {
-			return this.players.filter(player => {return !player.hasBet}).length == 0
+			return THIS.players.filter(player => {return !player.hasBet}).length == 0
 		}
 
-	this.Update();
+	THIS.Update();
 
 	}
 
