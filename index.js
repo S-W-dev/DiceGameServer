@@ -28,6 +28,7 @@ class Player {
 	constructor(socket, room) {
 		this.socket = socket;
 		this.room = room;
+		console.log(rooms);
 		this.id = rooms[this.room].players.length-1;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
