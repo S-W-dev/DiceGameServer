@@ -37,8 +37,8 @@ class Player {
 		
 		socket.send("connected");
 
-		socket.on('message', this.handleClientMessage);
-		socket.on('close', this.leaveGame);
+		socket.on('message', (data, THIS=this)=>{this.handleClientMessage()});
+		socket.on('close', (data, THIS=this)=>{this.leaveGame()});
 
 	}
 
