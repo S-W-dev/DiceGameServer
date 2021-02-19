@@ -146,7 +146,7 @@ class Room {
 			return this.players.filter(player => {return !player.hasBet}).length == 0
 		}
 
-	this.Update();
+	this.update();
 
 	}
 
@@ -155,7 +155,7 @@ class Room {
 		this.players.push(player);
 	}
 
-	Update() {
+	update() {
 		socket.send(
 			JSON.stringify({
 				roll: this.roll,
