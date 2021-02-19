@@ -162,7 +162,7 @@ class Room {
 			socket.send(
 			JSON.stringify({
 				roll: this.roll,
-				players: this.rooms[room].players
+				players: this.rooms[this.room].players
 			})
 		);
 		})
