@@ -168,10 +168,10 @@ class Room {
 		this.players.forEach(({socket, ...rest} = player) => {
 			players.push(rest);
 		});
-		this.players.forEach(({socket} = player) => {
+		this.players.forEach(({socket , ...rest} = player) => {
 			socket.send(
 			JSON.stringify({
-				player: player,
+				player: rest,
 				roll: this.roll,
 				players: players
 			})
