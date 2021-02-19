@@ -29,7 +29,7 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		console.log(rooms[this.room]);
-		this.id = rooms[this.room].players.length-1;
+		this.id = rooms[this.room].players.length-1 || 0;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
@@ -175,7 +175,7 @@ ws.on('connection', (socket) => {
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 
-
+	console.log("index: " + rooms.indexOf(room));
 	room.addPlayer(socket, rooms.indexOf(room));
 
 	console.table(rooms);
