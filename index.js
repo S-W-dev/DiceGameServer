@@ -164,7 +164,7 @@ class Room {
 
 			// });
 
-		} else if (running == false) {
+		} else if (this.running == false) {
 
 			this.players.forEach(player => {
 				if (player.status == PlayerStatus.LOST) player.resetPlayer();
