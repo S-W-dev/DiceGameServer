@@ -146,8 +146,7 @@ class Room {
 			return this.players.filter(player => { return !player.hasBet }).length == 0
 		}
 
-		room[this.players[0].room].update();
-
+		rooms[this.players[0].room].update();
 	}
 
 	addPlayer(socket, roomIndex) {
