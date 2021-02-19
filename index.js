@@ -160,11 +160,15 @@ class Room {
 	}
 
 	Update() {
+		let players = [];
+		this.players.forEach(({socket, ...rest} = player) => {
+			players.push(rest);
+		});
 		this.players.forEach(({socket} = player) => {
 			socket.send(
 			JSON.stringify({
 				roll: this.roll,
-				players: this.players
+				players: players
 			})
 		);
 		})
