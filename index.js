@@ -142,7 +142,7 @@ class Room {
 	Update() {
 		socket.send(
 			JSON.stringify({
-				roll: this.roll;
+				roll: this.roll
 			})
 		);
 	}
