@@ -57,6 +57,7 @@ class Player {
 
 	setStatus(status) {
 		if (this.status != PlayerStatus.LOST) this.status = status;
+		console.log(this.status);
 	}
 
 	resetPlayer() {
