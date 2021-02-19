@@ -29,7 +29,7 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		console.log(rooms);
-		this.id = rooms[this.room].players.length-1;
+		this.id = rooms[this.room].players.length-1 || 0;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
