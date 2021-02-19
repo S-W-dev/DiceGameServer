@@ -43,7 +43,8 @@ class Player {
 	}
 
 	leaveGame() {
-		rooms[room].players.splice(this.id, 1);
+		rooms[this.room].players.splice(this.id, 1);
+		console.table(rooms);
 	}
 
 	handleClientMessage(message) {
