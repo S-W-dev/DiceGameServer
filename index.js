@@ -99,7 +99,9 @@ class Room {
 
 		this.running = true;
 
-		setInterval((THIS = this) => { THIS.gameLoop() }, 1000);
+		this.hasPlayerJoined = false;
+
+		setInterval((THIS = this) => { if (THIS.hasPlayerJoined) THIS.gameLoop() }, 1000);
 
 	}
 
@@ -163,6 +165,7 @@ class Room {
 	addPlayer(socket, roomIndex) {
 		let player = new Player(socket, roomIndex);
 		this.players.push(player);
+		this.hasPlayerJoined = true;
 	}
 
 	Update() {
