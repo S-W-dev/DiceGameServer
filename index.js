@@ -39,8 +39,9 @@ class Player {
 
 		console.log("New player is " + this.status);
 
-		socket.on('message', (data)=>{this.handleClientMessage(data)});
-		socket.on('close', ()=>{this.leaveGame()});
+		socket.on('message', (data)=>this.handleClientMessage(data));
+		socket.on('connected', ()=>this.setStatus(PlayerStatus.WAITING));
+		socket.on('close', ()=>this.leaveGame());
 
 	}
 
