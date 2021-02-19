@@ -46,6 +46,7 @@ class Player {
 
 	leaveGame() {
 		//console.log(this.room);
+		console.log(this.room);
 		rooms[this.room].players.splice(this.id, 1);
 		//console.table(rooms);
 	}
