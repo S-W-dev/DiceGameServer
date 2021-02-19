@@ -29,7 +29,7 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		console.log(rooms[this.room]);
-		this.id = rooms[this.room].players.length-1 || 0;
+		this.id = rooms[this.room].players.length || 0;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
@@ -144,11 +144,11 @@ class Room {
 
 		}
 
+		this.Update();
+
 		function haveAllPlayersBet() {
 			return this.players.filter(player => {return !player.hasBet}).length == 0
 		}
-
-	this.Update();
 
 	}
 
@@ -162,7 +162,7 @@ class Room {
 			socket.send(
 			JSON.stringify({
 				roll: this.roll,
-				players: this.room.players
+				players: this.rooms[room].players
 			})
 		);
 		})
