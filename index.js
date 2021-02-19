@@ -113,7 +113,7 @@ class Room {
 			//roll the dice
 			let dice = ~~(Math.random() * 6) + 1;
 
-			this.Update();
+			this.update();
 
 			//determine outcome for each player
 			let losses = 0;
