@@ -151,8 +151,8 @@ class Room {
 	}
 
 	addPlayer(socket, roomIndex) {
-		let player = new Player(socket);
-		this.players.push(player, roomIndex);
+		let player = new Player(socket, roomIndex);
+		this.players.push(player);
 	}
 
 	Update() {
@@ -175,7 +175,6 @@ ws.on('connection', (socket) => {
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 
-	console.log("index: " + rooms.indexOf(room));
 	room.addPlayer(socket, rooms.indexOf(room));
 
 	console.table(rooms);
