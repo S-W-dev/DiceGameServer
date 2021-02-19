@@ -15,7 +15,9 @@ app.post('/webhook', (req, res) => {
 
 var rooms = [];
 
-class PlayerStatus { }
+class PlayerStatus { 
+	constructor() {}
+}
 PlayerStatus.prototype.BETTING = "betting";
 PlayerStatus.prototype.WAITING = "waiting";
 PlayerStatus.prototype.LOST = "lost";
