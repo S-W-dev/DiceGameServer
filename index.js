@@ -29,13 +29,13 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		console.log(rooms[this.room]);
-		this.id = rooms[this.room].players.length-1 || 0;
+		this.id = rooms[this.room].players.length - 1 || 0;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
 		this.bet = 0;
 		this.hasBet = false;
-		
+
 		socket.send("connected");
 
 		socket.on('message', this.handleClientMessage);
@@ -99,7 +99,7 @@ class Room {
 
 		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
 
-			if (this.players.filter(player => {return player.status != PlayerStatus.LOST}).length <= 1) running = false;
+			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
 
 			//wait for all players to bet
 			while (!haveAllPlayersBet()) {
@@ -113,25 +113,25 @@ class Room {
 			//roll the dice
 			let dice = ~~(Math.random() * 6) + 1;
 
-			this.update();
+			update();
 
 			//determine outcome for each player
 			let losses = 0;
 			let winners = [];
-			this.players.filter(player => {return player.status != PlayerStatus.LOST}).forEach((player, index) => {
+			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
 
-			if (player.bet != dice) {
-				setPlayerStatus(player, PlayerStatus.LOST_BET);
-				player.money -= player.bet;
-				losses += player.bet;
-				if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
-				player.Update();
-			}
+				if (player.bet != dice) {
+					setPlayerStatus(player, PlayerStatus.LOST_BET);
+					player.money -= player.bet;
+					losses += player.bet;
+					if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
+					player.Update();
+				}
 
-			if (player.bet == dice) {
-				setPlayerStatus(player, PlayerStatus.WON_BET);
-				winners.push(player);
-			}
+				if (player.bet == dice) {
+					setPlayerStatus(player, PlayerStatus.WON_BET);
+					winners.push(player);
+				}
 
 			});
 
@@ -143,10 +143,10 @@ class Room {
 		}
 
 		function haveAllPlayersBet() {
-			return this.players.filter(player => {return !player.hasBet}).length == 0
+			return this.players.filter(player => { return !player.hasBet }).length == 0
 		}
 
-	this.update();
+		update();
 
 	}
 
@@ -186,11 +186,11 @@ http.listen(666, () => {
 });
 
 function makeid(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+	var result = '';
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = characters.length;
+	for (var i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
 }
