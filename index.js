@@ -91,7 +91,7 @@ class Room {
 
 		this.running = true;
 
-		setInterval(THIS=this => {THIS.gameLoop()}, 1000);
+		setInterval((THIS=this) => {THIS.gameLoop()}, 1000);
 
 	}
 
