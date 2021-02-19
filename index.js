@@ -28,7 +28,7 @@ class Player {
 	constructor(socket, room) {
 		this.socket = socket;
 		this.room = room;
-		this.id = this.room.players.length-1;
+		this.id = rooms[this.room].players.length-1;
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
@@ -43,7 +43,7 @@ class Player {
 	}
 
 	leaveGame() {
-		this.room.players.splice(this.id, 1);
+		rooms[room].players.splice(this.id, 1);
 	}
 
 	handleClientMessage(message) {
@@ -65,7 +65,7 @@ class Player {
 			JSON.stringify({
 				type: "player_update",
 				player: {
-					room: this.room,
+					room: rooms[this.room],
 					id: this.id,
 					name: this.name,
 					status: this.status,
@@ -149,9 +149,9 @@ class Room {
 
 	}
 
-	addPlayer(socket) {
+	addPlayer(socket, roomIndex) {
 		let player = new Player(socket);
-		this.players.push(player, this.room);
+		this.players.push(player, roomIndex);
 	}
 
 	Update() {
@@ -170,13 +170,12 @@ ws.on('connection', (socket) => {
 	var room;
 	if (rooms.length == 0 || rooms[rooms.length - 1].players.length >= rooms[rooms.length - 1].maxPlayers) {
 		room = new Room(makeid(5))
-		room.room = room;
 		rooms.push(room);
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 
 
-	room.addPlayer(socket);
+	room.addPlayer(socket, rooms.indexOf(room));
 
 	console.table(rooms);
 
