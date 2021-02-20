@@ -190,30 +190,30 @@ class Room {
 	}
 
 	Update() {
-		// let players = [];
-		// this.players.forEach(({ socket, ...rest } = player) => {
-		// 	players.push(rest);
-		// });
-		// 		this.players.forEach(({ socket, ...rest } = player) => {
-		// 	socket.send(
-		// 		JSON.stringify({
-		// 			player: rest,
-		// 			roll: this.roll,
-		// 			players: players
-		// 		})
-		// 	);
-		// })
-		this.players.reduce((previous, current) => {
-			return previous.push(({socket,...rest} = current)=>{return rest}), previous;
-		}, []).forEach((player, index) => {
-			this.players[index].socket.send(
+		let players = [];
+		this.players.forEach(({ socket, ...rest } = player) => {
+			players.push(rest);
+		});
+				this.players.forEach(({ socket, ...rest } = player) => {
+			socket.send(
 				JSON.stringify({
-					player: player,
+					player: rest,
 					roll: this.roll,
 					players: players
 				})
 			);
-		});
+		})
+		// this.players.reduce((previous, current) => {
+		// 	return previous.push(({socket,...rest} = current)=>{return rest}), previous;
+		// }, []);forEach((player, index) => {
+		// 	this.players[index].socket.send(
+		// 		JSON.stringify({
+		// 			player: player,
+		// 			roll: this.roll,
+		// 			players: players
+		// 		})
+		// 	);
+		// });
 	}
 
 }
