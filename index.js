@@ -5,15 +5,15 @@ const WebSocket = require('ws');
 const ws = new WebSocket.Server({ port: 667 });
 
 let calcPlayers = ()=>{
-	// 	var i = 0;
-	// 	rooms.forEach(({players}) => {
-	// 	players.forEach(player => {
-	// 		i++;
-	// 	})
-	// })
-	// return i;
+		var i = 0;
+		rooms.forEach(({players}) => {
+		players.forEach(player => {
+			i++;
+		})
+	})
+	return i;
 
-	return rooms.reduce((accum, {players}) => { return accum + players.reduce((a, b) => { return b++; }, 0); }, 0)
+	//return rooms.reduce((accum, {players}) => { return accum + players.reduce((a, b) => { return b++; }, 0); }, 0)
 	}
 
 app.get('/', (req, res) => {
