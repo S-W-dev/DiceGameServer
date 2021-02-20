@@ -2,6 +2,8 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
+include('/server-ui.js')
+
 const ws = new WebSocket.Server({ port: 667 });
 
 app.get('/', (req, res) => {
@@ -47,7 +49,7 @@ class Player {
 
 	leaveGame() {
 		console.log("player leaving game");
-		try {rooms[this.room].players.splice(this.id, 1);} catch (x) {}
+		try { rooms[this.room].players.splice(this.id, 1); } catch (x) { }
 	}
 
 	handleClientMessage(message) {
@@ -56,7 +58,7 @@ class Player {
 			try {
 				message = JSON.parse(message);
 				if (message.type == "bet") {
-					if (message.bet <= this.money && message.bet >= 100 && message.choice <=6 && message.choice >= 1) {
+					if (message.bet <= this.money && message.bet >= 100 && message.choice <= 6 && message.choice >= 1) {
 						this.bet = message.bet;
 						this.choice = message.choice;
 						this.hasBet = true;
@@ -178,7 +180,7 @@ class Room {
 		this.players.forEach(({ socket, ...rest } = player) => {
 			players.push(rest);
 		});
-				this.players.forEach(({ socket, ...rest } = player) => {
+		this.players.forEach(({ socket, ...rest } = player) => {
 			socket.send(
 				JSON.stringify({
 					player: rest,
