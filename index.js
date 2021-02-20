@@ -77,21 +77,6 @@ class Player {
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
-		this.Update();
-	}
-
-	Update() {
-		socket.send(
-			JSON.stringify({
-				type: "player_update",
-				player: {
-					id: this.id,
-					name: this.name,
-					status: this.status,
-					money: this.money
-				}
-			})
-		);
 	}
 
 }
@@ -128,7 +113,6 @@ class Room {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
-					player.Update();
 				});
 			}
 
@@ -147,7 +131,6 @@ class Room {
 					player.money -= player.bet;
 					losses += player.bet;
 					if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
-					player.Update();
 				}
 
 				if (player.choice == dice) {
@@ -159,7 +142,6 @@ class Room {
 
 			winners.forEach(player => {
 				player.money += ~~(losses / winners.length)
-				player.Update();
 			});
 
 			// this.players.forEach(player => {
