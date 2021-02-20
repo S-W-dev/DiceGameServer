@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-({serverUi}=require('./server-ui.js'))=>{serverUi()}
+({serverUi}=require('./server-ui.js'))=>{serverUi()}();
 
 const ws = new WebSocket.Server({ port: 667 });
 
