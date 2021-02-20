@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 	var data = ``;
 
 	rooms.forEach(({players: [...{name, money, status}]}, index) => {
-		data += [name, money, status, rest, index].join("\n") + "\n";
+		data += [name, money, status, index].join("\n") + "\n";
 	})
 
 	res.send(data);
