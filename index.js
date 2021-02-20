@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 	<script>
 		var tbody = document.getElementById('tbody');
 
-		var obj = ${rooms.toString()};
+		var obj = ${rooms.join(', ') || []};
 
 for (var i = 0; i < obj.length; i++) {
     var tr = "<tr>";
