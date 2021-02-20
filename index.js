@@ -98,7 +98,7 @@ class Room {
 	constructor(roomCode) {
 		this.roomCode = roomCode;
 
-		this.maxPlayers = 2;
+		this.maxPlayers = 8;
 		this.minPlayers = 2;
 
 		this.players = [];
