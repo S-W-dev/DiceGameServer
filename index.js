@@ -9,7 +9,7 @@ res.send(`${rooms.length} rooms active. ${
 
 	()=>{
 		var i = 0;
-		rooms.forEach({players} => {
+		rooms.forEach(({players}) => {
 		players.forEach(player => {
 			i++;
 		})
