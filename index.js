@@ -15,7 +15,7 @@ res.send(`${rooms.length} rooms active. ${
 		})
 	})
 	return i;
-	}
+	}()
 	
 } players active.`)
 });
