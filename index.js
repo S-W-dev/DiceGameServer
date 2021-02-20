@@ -5,30 +5,14 @@ const WebSocket = require('ws');
 const ws = new WebSocket.Server({ port: 667 });
 
 app.get('/', (req, res) => {
-	res.send(`
-	<table>
-    <tbody id="tbody"></tbody>
-</table>
-	<script>
-		var tbody = document.getElementById('tbody');
 
-		var obj = ${rooms || []};
+	var data = ``;
 
-for (var i = 0; i < obj.length; i++) {
-    var tr = "<tr>";
+	rooms.forEach(({ [{name, status, ...restOfPlayer} = ...arr] = players, ...rest } = room, index) => {
+		data += [name, status, restOfPlayer, arr, players, rest, room, index].join("\\n")+"\\n";
+	})
 
-    /* Verification to add the last decimal 0 */
-    if (obj[i].value.toString().substring(obj[i].value.toString().indexOf('.'), obj[i].value.toString().length) < 2) 
-        obj[i].value += "0";
-
-    /* Must not forget the $ sign */
-    tr += "<td>" + obj[i].key + "</td>" + "<td>$" + obj[i].value.toString() + "</td></tr>";
-
-    /* We add the table row to the table body */
-    tbody.innerHTML += tr;
-}
-	</script>
-	`);
+	res.send(data);
 });
 
 app.post('/webhook', (req, res) => {
