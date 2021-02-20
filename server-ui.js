@@ -1,4 +1,4 @@
-module.export () => {
+exports.serverUi = () => {
 	const {app, BrowserWindow} = require('electron');
 
 function createWindow() {
