@@ -1,4 +1,5 @@
-const {app, BrowserWindow} = require('electron');
+export () => {
+	const {app, BrowserWindow} = require('electron');
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -21,3 +22,5 @@ app.on('window-all-closed', ()=>{
 app.on('activate', () => {
 	if (BrowserWindow.getAllWindows().length == 0) createWindow();
 })
+
+}
