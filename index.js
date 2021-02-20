@@ -1,9 +1,7 @@
 const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
-
 const ws = new WebSocket.Server({ port: 667 });
-
 let calcPlayers = ()=>{
 		var i = 0;
 		rooms.forEach(({players}) => {
@@ -12,9 +10,8 @@ let calcPlayers = ()=>{
 		})
 	})
 	return i;
-
-	//return rooms.reduce((accum, {players}) => { return accum + players.reduce((a, b) => { return b++; }, 0); }, 0)
 	}
+var rooms = [];
 
 app.get('/', (req, res) => {
 res.send(`${rooms.length} room(s) active. ${calcPlayers()} player(s) active.`)
@@ -25,7 +22,9 @@ app.post('/webhook', (req, res) => {
 	process.exit();
 });
 
-var rooms = [];
+http.listen(666, () => {
+	console.log('listening on *:666');
+});
 
 class PlayerStatus { }
 PlayerStatus.BETTING = "betting";
@@ -47,14 +46,10 @@ class Player {
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
-
 		socket.send("connected");
-
 		console.log("New player is " + this.status);
-
 		socket.on('message', (data) => this.handleClientMessage(data));
 		socket.on('close', () => this.leaveGame());
-
 	}
 
 	leaveGame() {
@@ -73,61 +68,40 @@ class Player {
 						this.bet = message.bet;
 						this.choice = message.choice;
 						this.hasBet = true;
-					} //we need to send an error message here
+					}
 				}
-				//  else if (message.type == "set") {
-				// 	Object.keys(({type, ...message})=>{return message}).forEach({key} => {
-				// 		if (this.hasOwnProperty(key)) this[key] = message["set"][key]
-				// 	});
-				// }
 			} catch (x) {
 				console.log('received: %s', message);
 			}
 		}
 	}
-
 	setStatus(status) {
 		if (this.status != PlayerStatus.LOST) this.status = status;
 		console.log(this.status);
 	}
-
 	resetPlayer() {
 		this.money = 10000;
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
 	}
-
 }
 
 class Room {
 	constructor(roomCode) {
 		this.roomCode = roomCode;
-
 		this.maxPlayers = 8;
 		this.minPlayers = 2;
-
 		this.players = [];
-
 		this.roll = 0;
-
 		this.running = true;
-
 		this.hasPlayerJoined = false;
-
 		setInterval((THIS = this) => { if (THIS.hasPlayerJoined) THIS.gameLoop() }, 1000);
-
 	}
 
 	gameLoop() {
-
-		//console.log(this);
-
 		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
-
 			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
-
-			//wait for all players to bet
 			while (!haveAllPlayersBet()) {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
@@ -135,54 +109,40 @@ class Room {
 				});
 			}
 
-			//roll the dice
 			let dice = ~~(Math.random() * 6) + 1;
+			this.roll = dice;
 
 			this.Update();
 
-			//determine outcome for each player
-			let losses = 0;
+			let losses = 0
 			let winners = [];
 			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
-
 				if (player.choice != dice) {
 					setPlayerStatus(player, PlayerStatus.LOST_BET);
 					player.money -= player.bet;
 					losses += player.bet;
 					if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
 				}
-
 				if (player.choice == dice) {
 					setPlayerStatus(player, PlayerStatus.WON_BET);
 					winners.push(player);
 				}
-
 			});
-
 			winners.forEach(player => {
 				player.money += ~~(losses / winners.length)
 			});
-
-			// this.players.forEach(player => {
-
-			// });
-
 		} else if (this.running == false) {
-
 			this.players.forEach(player => {
 				if (player.status == PlayerStatus.LOST) player.resetPlayer();
 			});
-
 			running = true;
-
-		} //else 
+		}
 
 		this.Update();
 
 		function haveAllPlayersBet() {
 			return this.players.filter(player => { return !player.hasBet }).length == 0
 		}
-
 	}
 
 	addPlayer(socket, roomIndex) {
@@ -205,19 +165,7 @@ class Room {
 				})
 			);
 		})
-		// this.players.reduce((previous, current) => {
-		// 	return previous.push(({socket,...rest} = current)=>{return rest}), previous;
-		// }, []);forEach((player, index) => {
-		// 	this.players[index].socket.send(
-		// 		JSON.stringify({
-		// 			player: player,
-		// 			roll: this.roll,
-		// 			players: players
-		// 		})
-		// 	);
-		// });
 	}
-
 }
 
 ws.on('connection', (socket) => {
@@ -228,25 +176,11 @@ ws.on('connection', (socket) => {
 		rooms.push(room);
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
-
 	room.addPlayer(socket, rooms.indexOf(room));
-
-});
-
-// setInterval(() => {
-// 	console.table(rooms);
-// }, 100);
-
-http.listen(666, () => {
-	console.log('listening on *:666');
 });
 
 function makeid(length) {
 	var result = '';
-	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	var charactersLength = characters.length;
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	}
+	for (var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',i = 0; i < c.length; i++) result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	return result;
 }
