@@ -158,7 +158,7 @@ class Room {
 
 			running = true;
 
-		} else if (this.players.length <= 0) rooms.splice(rooms.indexOf(this), 1);
+		} //else if (this.players.length <= 0) rooms.splice(rooms.indexOf(this), 1);
 
 		this.Update();
 
