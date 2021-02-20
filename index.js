@@ -44,6 +44,7 @@ class Player {
 	leaveGame() {
 		console.log("player leaving game");
 		try { rooms[this.room].players.splice(this.id, 1); } catch (x) { }
+		try { if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1); } catch (x) { }
 	}
 
 	handleClientMessage(message) {
@@ -158,7 +159,7 @@ class Room {
 
 			running = true;
 
-		} //else if (this.players.length <= 0) rooms.splice(rooms.indexOf(this), 1);
+		} //else 
 
 		this.Update();
 
@@ -216,7 +217,7 @@ ws.on('connection', (socket) => {
 
 });
 
-setInterval(()=>{
+setInterval(() => {
 	console.table(rooms);
 }, 100);
 
