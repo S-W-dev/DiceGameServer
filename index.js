@@ -7,9 +7,9 @@ const ws = new WebSocket.Server({ port: 667 });
 app.get('/', (req, res) => {
 res.send(`${rooms.length} rooms active. ${
 
-	rooms.reduce((previous, {players}) => {
-		previous += players.reduce((p, c) => {
-			p += c 
+	rooms.reduce((previous, current) => {
+		previous += current.players.reduce((p, c) => {
+			p += 1
 		}, 0)
 	}, 0);
 
