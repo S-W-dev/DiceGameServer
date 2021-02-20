@@ -203,10 +203,12 @@ class Room {
 		// 		})
 		// 	);
 		// })
-		this.players.reduce((previous, current) => {
+		var players = this.players;
+		players.reduce((previous, current) => {
 			previous.push(({socket,...rest} = current)=>{return rest})
-		}, []).forEach((player, index) => {
-			this.players[index].socket.send(
+		}, []);
+		players.forEach((player, index) => {
+			players[index].socket.send(
 				JSON.stringify({
 					player: player,
 					roll: this.roll,
