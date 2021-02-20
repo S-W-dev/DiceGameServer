@@ -46,6 +46,7 @@ class Player {
 	}
 
 	leaveGame() {
+		console.log("player leaving game");
 		try {rooms[this.room].players.splice(this.id, 1);} catch (x) {}
 	}
 
