@@ -4,6 +4,18 @@ const WebSocket = require('ws');
 
 const ws = new WebSocket.Server({ port: 667 });
 
+app.get('/', (req, res) => {
+res.send(`${rooms.length} rooms active. ${
+
+	rooms.reduce((previous, {players}) => {
+		previous += players.reduce((p, c) => {
+			p += c 
+		}, 0)
+	}, 0);
+
+} players active.`)
+});
+
 app.post('/webhook', (req, res) => {
 	console.log("received webhook. Restarting now.")
 	process.exit();
