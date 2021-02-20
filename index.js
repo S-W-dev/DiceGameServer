@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-const { app1, BrowserWindow } = require('electron');
+const { app1: app, BrowserWindow } = require('electron');
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -16,20 +16,7 @@ function createWindow() {
 	win.loadFile('index.html');
 }
 
-setTimeout(()=>{
-	app1.whenReady().then(createWindow);
-	app1.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app1.quit();
-	}
-})
-
-app1.on('activate', () => {
-	if (BrowserWindow.getAllWindows().length === 0) {
-		createWindow();
-	}
-})
-	}, 100);
+console.log(app1);
 
 const ws = new WebSocket.Server({ port: 667 });
 
