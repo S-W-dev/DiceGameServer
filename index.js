@@ -2,19 +2,19 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 const ws = new WebSocket.Server({ port: 667 });
-let calcPlayers = ()=>{
-		var i = 0;
-		rooms.forEach(({players}) => {
+let calcPlayers = () => {
+	var i = 0;
+	rooms.forEach(({ players }) => {
 		players.forEach(player => {
 			i++;
 		})
 	})
 	return i;
-	}
+}
 var rooms = [];
 
 app.get('/', (req, res) => {
-res.send(`${rooms.length} room(s) active. ${calcPlayers()} player(s) active.`)
+	res.send(`${rooms.length} room(s) active. ${calcPlayers()} player(s) active.`)
 });
 
 app.post('/webhook', (req, res) => {
@@ -185,6 +185,6 @@ ws.on('connection', (socket) => {
 
 function makeid(length) {
 	var result = '';
-	for (var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',i = 0; i < c.length; i++) result += c.charAt(Math.floor(Math.random() * c.length));
+	for (var c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', i = 0; i < c.length; i++) result += c.charAt(Math.floor(Math.random() * c.length));
 	return result;
 }
