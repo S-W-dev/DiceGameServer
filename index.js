@@ -8,8 +8,8 @@ app.get('/', (req, res) => {
 
 	var data = ``;
 
-	rooms.forEach(({players: [{...rest}]} = room, index) => {
-		console.log(rest);
+	rooms.forEach(({players: [{name, status, money}]} = room, index) => {
+		console.log(name, status, money);
 	})
 
 	res.send(data);
