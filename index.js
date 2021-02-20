@@ -58,6 +58,11 @@ class Player {
 						this.hasBet = true;
 					} //we need to send an error message here
 				}
+				//  else if (message.type == "set") {
+				// 	Object.keys(({type, ...message})=>{return message}).forEach({key} => {
+				// 		if (this.hasOwnProperty(key)) this[key] = message["set"][key]
+				// 	});
+				// }
 			} catch (x) {
 				console.log('received: %s', message);
 			}
