@@ -33,6 +33,7 @@ class Player {
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
 		this.bet = 0;
+		this.choice = 0;
 		this.hasBet = false;
 
 		socket.send("connected");
