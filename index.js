@@ -2,7 +2,10 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-const { app: app1, BrowserWindow } = require('electron');
+const electron = require('electron');
+
+const app1 = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 
 function createWindow() {
 	const win = new BrowserWindow({
