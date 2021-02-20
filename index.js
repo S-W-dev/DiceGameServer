@@ -81,6 +81,9 @@ class Player {
 	}
 	resetPlayer() {
 		this.money = 10000;
+		this.nextRound();
+	}
+	nextRound() {
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
@@ -131,6 +134,7 @@ class Room {
 			winners.forEach(player => {
 				player.money += ~~(losses / winners.length)
 			});
+			this.players.forEach(player => player.nextRound())
 		} else if (this.running == false) {
 			this.players.forEach(player => {
 				if (player.status == PlayerStatus.LOST) player.resetPlayer();
