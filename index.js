@@ -77,6 +77,7 @@ class Player {
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
+		this.Update();
 	}
 
 	Update() {
