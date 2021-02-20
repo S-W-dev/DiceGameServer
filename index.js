@@ -16,7 +16,7 @@ function createWindow() {
 	win.loadFile('index.html');
 }
 
-app1.whenReady().then(createWindow);
+setTimeout(()=>{app1.whenReady().then(createWindow);}, 100);
 
 app1.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
