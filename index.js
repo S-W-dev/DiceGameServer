@@ -16,9 +16,9 @@ function createWindow() {
 	win.loadFile('index.html');
 }
 
-setTimeout(()=>{app1.whenReady().then(createWindow);}, 100);
-
-app1.on('window-all-closed', () => {
+setTimeout(()=>{
+	app1.whenReady().then(createWindow);
+	app1.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app1.quit();
 	}
@@ -29,6 +29,8 @@ app1.on('activate', () => {
 		createWindow();
 	}
 })
+	}, 100);
+
 const ws = new WebSocket.Server({ port: 667 });
 
 app.get('/', (req, res) => {
