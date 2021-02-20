@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
 
 	var data = ``;
 
-	rooms.forEach(({players: [...rest]} = room, index) => {
+	rooms.forEach(({players: [{...rest}]} = room, index) => {
 		console.log(rest);
 	})
 
