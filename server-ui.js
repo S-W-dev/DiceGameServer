@@ -1,4 +1,4 @@
-export () => {
+module.export () => {
 	const {app, BrowserWindow} = require('electron');
 
 function createWindow() {
