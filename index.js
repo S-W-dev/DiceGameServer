@@ -7,12 +7,16 @@ const ws = new WebSocket.Server({ port: 667 });
 app.get('/', (req, res) => {
 res.send(`${rooms.length} rooms active. ${
 
-	rooms.reduce((previous, current) => {
-		previous += current.players.reduce((p, c) => {
-			p += 1
-		}, 0)
-	}, 0);
-
+	()=>{
+		var i = 0;
+		rooms.forEach({players} => {
+		players.forEach(player => {
+			i++;
+		})
+	})
+	return i;
+	}
+	
 } players active.`)
 });
 
