@@ -4,25 +4,8 @@ const WebSocket = require('ws');
 
 const ws = new WebSocket.Server({ port: 667 });
 
-let calcPlayers = ()=>{
-	// 	var i = 0;
-	// 	rooms.forEach(({players}) => {
-	// 	players.forEach(player => {
-	// 		i++;
-	// 	})
-	// })
-	// return i;
-
-	return rooms.reduce((accum, {players}) => {
-		return players.reduce(a => {
-			return a++;
-		}, 0);
-	}, 0)
-
-	}
-
 app.get('/', (req, res) => {
-res.send(`${rooms.length} rooms active. ${calcPlayers()} players active.`)
+	res.send(`${rooms.length} rooms active. ${rooms.reduce((accum, { players }) => { return accum + players.reduce((a, b) => { return b++; }, 0); }, 0)} players active.`)
 });
 
 app.post('/webhook', (req, res) => {
