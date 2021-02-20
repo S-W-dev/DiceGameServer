@@ -4,17 +4,6 @@ const WebSocket = require('ws');
 
 const ws = new WebSocket.Server({ port: 667 });
 
-app.get('/', (req, res) => {
-
-	var data = ``;
-
-	rooms.forEach(({players: [{name, status, money} = ...rest]} = room, index) => {
-		console.log(name, status, money);
-	})
-
-	res.send(data);
-});
-
 app.post('/webhook', (req, res) => {
 	console.log("received webhook. Restarting now.")
 	process.exit();
