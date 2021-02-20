@@ -2,29 +2,33 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
-const electron = require('electron');
-
-const app1 = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-
-function createWindow() {
-	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
-		webPreferences: {
-			nodeIntegration: true
-		}
-	});
-
-	win.loadFile('index.html');
-}
-
-console.log(app1);
-
 const ws = new WebSocket.Server({ port: 667 });
 
 app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/index.html');
+	res.send(`
+	<table>
+    <tbody id="tbody"></tbody>
+</table>
+	<script>
+		var tbody = document.getElementById('tbody');
+
+		var obj = ${rooms.toString()};
+
+for (var i = 0; i < obj.length; i++) {
+    var tr = "<tr>";
+
+    /* Verification to add the last decimal 0 */
+    if (obj[i].value.toString().substring(obj[i].value.toString().indexOf('.'), obj[i].value.toString().length) < 2) 
+        obj[i].value += "0";
+
+    /* Must not forget the $ sign */
+    tr += "<td>" + obj[i].key + "</td>" + "<td>$" + obj[i].value.toString() + "</td></tr>";
+
+    /* We add the table row to the table body */
+    tbody.innerHTML += tr;
+}
+	</script>
+	`);
 });
 
 app.post('/webhook', (req, res) => {
