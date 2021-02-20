@@ -214,9 +214,11 @@ ws.on('connection', (socket) => {
 
 	room.addPlayer(socket, rooms.indexOf(room));
 
-	console.table(rooms);
-
 });
+
+setInterval(()=>{
+	console.table(rooms);
+}, 100);
 
 http.listen(666, () => {
 	console.log('listening on *:666');
