@@ -181,6 +181,6 @@ ws.on('connection', (socket) => {
 
 function makeid(length) {
 	var result = '';
-	for (var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',i = 0; i < c.length; i++) result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	for (var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',i = 0; i < c.length; i++) result += c.charAt(Math.floor(Math.random() * c.length));
 	return result;
 }
