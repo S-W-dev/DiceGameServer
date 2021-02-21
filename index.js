@@ -106,13 +106,14 @@ class Room {
 	gameLoop() {
 		if (this.players.length >= this.minPlayers && this.players.length <= this.maxPlayers && this.running) {
 			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
-			while (!(this.players.filter(player => { return !player.hasBet }).length == 0)) {
+			
+			if (!(this.players.filter(player => { return !player.hasBet }).length == 0)) {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
 					this.Update();
 				});
-			}
+			}  else {
 
 			let dice = ~~(Math.random() * 6) + 1;
 			this.roll = dice;
@@ -137,6 +138,7 @@ class Room {
 				player.money += ~~(losses / winners.length)
 			});
 			this.players.forEach(player => player.nextRound())
+		}
 		} else if (this.running == false) {
 			this.players.forEach(player => {
 				if (player.status == PlayerStatus.LOST) player.resetPlayer();
