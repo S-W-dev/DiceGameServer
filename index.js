@@ -147,7 +147,7 @@ class Room {
 		this.Update();
 
 		function haveAllPlayersBet() {
-			return this.players.filter(player => { return !player.hasBet }).length == 0
+			return console.log(this.players.filter(player => { return !player.hasBet }).length == 0), this.players.filter(player => { return !player.hasBet }).length == 0
 		}
 	}
 
