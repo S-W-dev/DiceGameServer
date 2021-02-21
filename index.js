@@ -104,7 +104,7 @@ class Room {
 	}
 
 	gameLoop() {
-		if (this.players >= this.minPlayers && this.players <= maxPlayers && this.running) {
+		if (this.players.length >= this.minPlayers && this.players.length <= maxPlayers && this.running) {
 			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
 			while (!haveAllPlayersBet()) {
 				this.players.forEach(player => {
