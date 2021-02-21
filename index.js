@@ -30,7 +30,7 @@ class PlayerStatus { }
 PlayerStatus.BETTING = "betting";
 PlayerStatus.WAITING = "waiting";
 PlayerStatus.LOST = "lost";
-PlayerStatus.LOST_BET = "lost";
+PlayerStatus.LOST_BET = "lost_bet";
 PlayerStatus.WON = "won";
 PlayerStatus.WON_BET = "won_bet";
 PlayerStatus.CONNECTING = "connecting";
