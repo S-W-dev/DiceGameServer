@@ -68,6 +68,7 @@ class Player {
 						this.bet = message.bet;
 						this.choice = message.choice;
 						this.hasBet = true;
+						console.log(this.name + " bet $" + this.bet + " on dice " + this.choice);
 					}
 				}
 			} catch (x) {
