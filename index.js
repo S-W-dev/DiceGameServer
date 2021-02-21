@@ -113,7 +113,7 @@ class Room {
 		this.running = true;
 		this.hasPlayerJoined = false;
 
-		setInterval(( => { if (this.hasPlayerJoined) this.gameLoop() }, 1000);
+		setInterval(() => { if (this.hasPlayerJoined) this.gameLoop() }, 1000);
 	}
 
 	gameLoop() {
