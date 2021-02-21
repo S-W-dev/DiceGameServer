@@ -106,7 +106,7 @@ class Room {
 	gameLoop() {
 		if (this.players.length >= this.minPlayers && this.players.length <= this.maxPlayers && this.running) {
 			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) running = false;
-			while (!haveAllPlayersBet()) {
+			while (!(this.players.filter(player => { return !player.hasBet }).length == 0)) {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
@@ -145,10 +145,6 @@ class Room {
 		}
 
 		this.Update();
-
-		function haveAllPlayersBet() {
-			return console.log(this.players.filter(player => { return !player.hasBet }).length == 0), this.players.filter(player => { return !player.hasBet }).length == 0
-		}
 	}
 
 	addPlayer(socket, roomIndex) {
