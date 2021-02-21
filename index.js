@@ -41,22 +41,28 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		this.id = rooms[this.room].players.length || 0;
+
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
+
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
+
 		socket.send("connected");
-		console.log("New player is " + this.status);
+
 		socket.on('message', (data) => this.handleClientMessage(data));
 		socket.on('close', () => this.leaveGame());
 	}
 
 	leaveGame() {
-		console.log("player leaving game");
-		try { rooms[this.room].players.splice(this.id, 1); } catch (x) { }
-		try { if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1); } catch (x) { }
+		try {
+			rooms[this.room].players.splice(this.id, 1);
+		} catch (x) { }
+		try {
+			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
+		} catch (x) { }
 	}
 
 	handleClientMessage(message) {
@@ -64,13 +70,17 @@ class Player {
 		else {
 			try {
 				message = JSON.parse(message);
-				if (message.type == "bet") {
-					if (message.bet <= this.money && message.bet >= 100 && message.choice <= 6 && message.choice >= 1) {
-						this.bet = message.bet;
-						this.choice = message.choice;
-						this.hasBet = true;
-						console.log(this.name + " bet $" + this.bet + " on dice " + this.choice);
-					}
+				switch (message.type) {
+					case "bet":
+						if (message.bet <= this.money && message.bet >= 100 && message.choice <= 6 && message.choice >= 1) {
+							this.bet = message.bet;
+							this.choice = message.choice;
+							this.hasBet = true;
+						}
+						break;
+					case "name":
+						this.name = message.name;
+						break;
 				}
 			} catch (x) {
 				console.log('received: %s', message);
@@ -79,7 +89,6 @@ class Player {
 	}
 	setStatus(status) {
 		if (this.status != PlayerStatus.LOST) this.status = status;
-		console.log(this.status);
 	}
 	resetPlayer() {
 		this.money = 10000;
@@ -95,58 +104,75 @@ class Player {
 class Room {
 	constructor(roomCode) {
 		this.roomCode = roomCode;
+
 		this.maxPlayers = 8;
 		this.minPlayers = 2;
+
 		this.players = [];
 		this.roll = 0;
 		this.running = true;
 		this.hasPlayerJoined = false;
-		setInterval((THIS = this) => { if (THIS.hasPlayerJoined) THIS.gameLoop() }, 1000);
+
+		setInterval(( => { if (this.hasPlayerJoined) this.gameLoop() }, 1000);
 	}
 
 	gameLoop() {
 		if (this.players.length >= this.minPlayers && this.players.length <= this.maxPlayers && this.running) {
+
+			//stop game if everyone has lost
 			if (this.players.filter(player => { return player.status != PlayerStatus.LOST }).length <= 1) this.running = false;
-			
+
+			//if players haven't all bet, wait until they have
 			if (!(this.players.filter(player => { return !player.hasBet }).length == 0)) {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
-					this.Update();
 				});
-			}  else {
+			} else {
 
-			let dice = ~~(Math.random() * 6) + 1;
-			this.roll = dice;
+				//roll the dice
+				let dice = ~~(Math.random() * 6) + 1;
 
-			this.Update();
+				let losses = 0
+				let winners = [];
 
-			let losses = 0
-			let winners = [];
-			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
-				if (player.choice != dice) {
-					player.setStatus(PlayerStatus.LOST_BET);
-					player.money -= player.bet;
-					losses += player.bet;
-					if (player.money <= 0) player.setStatus(PlayerStatus.LOST);
-				}
-				if (player.choice == dice) {
-					player.setStatus(PlayerStatus.WON_BET);
-					winners.push(player);
-				}
-			});
-			winners.forEach(player => {
-				player.money += ~~(losses / winners.length)
-			});
-			this.players.forEach(player => player.nextRound())
-		}
+				this.roll = dice;
+
+				//loop through players that are still in the game
+				this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
+
+					//player lost bet
+					if (player.choice != dice) {
+						player.setStatus(PlayerStatus.LOST_BET);
+						player.money -= player.bet;
+						losses += player.bet;
+						if (player.money <= 0) player.setStatus(PlayerStatus.LOST);
+					}
+
+					//player won bet
+					if (player.choice == dice) {
+						player.setStatus(PlayerStatus.WON_BET);
+						winners.push(player);
+					}
+
+				});
+
+				//split winnings among winners
+				winners.forEach(player => {
+					player.money += ~~(losses / winners.length)
+				});
+
+				//start next round
+				this.players.forEach(player => player.nextRound())
+			}
 		} else if (this.running == false) {
+			//reset players that have lost
 			this.players.forEach(player => {
 				if (player.status == PlayerStatus.LOST) player.resetPlayer();
 			});
 			this.running = true;
 		}
-
+		//send update to every player
 		this.Update();
 	}
 
