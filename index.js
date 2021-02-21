@@ -124,13 +124,13 @@ class Room {
 			let winners = [];
 			this.players.filter(player => { return player.status != PlayerStatus.LOST }).forEach((player, index) => {
 				if (player.choice != dice) {
-					setPlayerStatus(player, PlayerStatus.LOST_BET);
+					player.setStatus(PlayerStatus.LOST_BET);
 					player.money -= player.bet;
 					losses += player.bet;
-					if (player.money <= 0) setPlayerStatus(PlayerStatus.LOST);
+					if (player.money <= 0) player.setStatus(PlayerStatus.LOST);
 				}
 				if (player.choice == dice) {
-					setPlayerStatus(player, PlayerStatus.WON_BET);
+					player.setStatus(PlayerStatus.WON_BET);
 					winners.push(player);
 				}
 			});
