@@ -85,6 +85,13 @@ class Player {
 					case "name":
 						this.name = message.name;
 						break;
+					case "join":
+						var matchingRooms = rooms.filter(room => room.roomCode == message.room_code);
+						if (matchingRooms.length == 1) {
+							leaveGame();
+							matchingRooms[0].addPlayer(player.socket, rooms.indexOf(matchingRooms[0]));
+						}
+						break;
 				}
 			} catch (x) {
 				console.log('received: %s', message);
