@@ -50,6 +50,9 @@ class Player {
 		this.choice = 0;
 		this.hasBet = false;
 
+		this.timeout = 0;
+		this.timeouts = 0;
+
 		socket.send("connected");
 
 		socket.on('message', (data) => this.handleClientMessage(data));
@@ -76,6 +79,7 @@ class Player {
 							this.bet = message.bet;
 							this.choice = message.choice;
 							this.hasBet = true;
+							this.timeout = 0;
 						}
 						break;
 					case "name":
@@ -98,6 +102,7 @@ class Player {
 		this.bet = 0;
 		this.choice = 0;
 		this.hasBet = false;
+		this.timeout = 0;
 	}
 }
 
@@ -126,7 +131,22 @@ class Room {
 			if (!(this.players.filter(player => { return !player.hasBet }).length == 0)) {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
-					else player.setStatus(PlayerStatus.BETTING);
+					else {
+						if (player.timeout >= 30) {
+							if (player.timeouts >= 3) {
+								player.leaveGame();
+							} else {
+							player.bet = 100;
+							player.choice = 1;
+							player.hasBet = true;
+							player.timeout = 0;
+							player.timeouts++;
+							}
+						} else {
+							player.setStatus(PlayerStatus.BETTING);
+							player.timeout++;
+						}
+					}
 				});
 			} else {
 
