@@ -110,6 +110,7 @@ class Room {
 				this.players.forEach(player => {
 					if (player.hasBet) player.setStatus(PlayerStatus.WAITING);
 					else player.setStatus(PlayerStatus.BETTING);
+					this.Update();
 				});
 			}
 
