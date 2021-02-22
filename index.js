@@ -132,6 +132,18 @@ class Room {
 		setInterval(() => { if (this.hasPlayerJoined) this.gameLoop() }, 1000);
 	}
 
+	playerLeavingGame(socketId) {
+		this.players.forEach(player => {
+			player.socket.send(Json.stringify({type:"leave", socketId}));
+		})
+	}
+
+	playerJoiningGame(socketId) {
+		this.players.forEach(player => {
+			player.socket.send(Json.stringify({type:"join", socketId}));
+		})
+	}
+
 	gameLoop() {
 		if (this.players.length >= this.minPlayers && this.players.length <= this.maxPlayers && this.running) {
 
