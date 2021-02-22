@@ -41,6 +41,7 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		this.id = rooms[this.room].players.length || 0;
+		this.room_code = rooms[this.room].roomCode;
 
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
@@ -90,6 +91,7 @@ class Player {
 						if (matchingRooms.length == 1) {
 							leaveGame();
 							matchingRooms[0].addPlayer(player.socket, rooms.indexOf(matchingRooms[0]));
+							console.table(rooms);
 						}
 						break;
 				}
@@ -235,6 +237,7 @@ ws.on('connection', (socket) => {
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 	room.addPlayer(socket, rooms.indexOf(room));
+	console.table(rooms);
 });
 
 function makeid(length) {
