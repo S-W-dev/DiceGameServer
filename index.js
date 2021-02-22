@@ -67,6 +67,7 @@ class Player {
 		try {
 			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
 		} catch (x) { }
+		this.resetPlayer();
 	}
 
 	handleClientMessage(message) {
