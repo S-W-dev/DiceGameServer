@@ -41,6 +41,7 @@ class Player {
 		this.socket = socket;
 		this.room = room;
 		this.id = rooms[this.room].players.length || 0;
+		this.socketId = socket.getUniqueID();
 		this.room_code = rooms[this.room].roomCode;
 
 		this.name = "Player";
