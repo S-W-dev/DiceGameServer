@@ -77,7 +77,10 @@ class Player {
 	}
 
 	handleClientMessage(message) {
-		if (message == "connected") this.setStatus(PlayerStatus.WAITING);
+		if (message == "connected") {
+			this.setStatus(PlayerStatus.WAITING);
+			console.log(message);
+		}
 		else {
 			try {
 				message = JSON.parse(message);
