@@ -27,13 +27,13 @@ http.listen(666, () => {
 });
 
 class PlayerStatus { }
-PlayerStatus.BETTING = "betting";
-PlayerStatus.WAITING = "waiting";
-PlayerStatus.LOST = "lost";
-PlayerStatus.LOST_BET = "lost_bet";
-PlayerStatus.WON = "won";
-PlayerStatus.WON_BET = "won_bet";
-PlayerStatus.CONNECTING = "connecting";
+PlayerStatus.BETTING = "Betting...";
+PlayerStatus.WAITING = "Waiting...";
+PlayerStatus.LOST = "Lost Game";
+PlayerStatus.LOST_BET = "Lost Bet";
+PlayerStatus.WON = "Won Game!";
+PlayerStatus.WON_BET = "Won Bet!";
+PlayerStatus.CONNECTING = "Connecting...";
 PlayerStatus.DISCONNECTED = "disconnected";
 
 class Player {
@@ -70,7 +70,7 @@ class Player {
 		try {
 			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
 		} catch (x) { }
-		rooms[this.room].playerLeavingGame(this.socketId);
+		rooms[this.room]?.playerLeavingGame(this.socketId);
 		this.resetPlayer();
 	}
 
