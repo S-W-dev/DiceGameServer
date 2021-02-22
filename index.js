@@ -96,7 +96,8 @@ class Player {
 						break;
 				}
 			} catch (x) {
-				console.log('received:', message);
+				console.log(x);
+				console.log(message);
 			}
 		}
 	}
