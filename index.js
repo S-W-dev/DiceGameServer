@@ -57,6 +57,8 @@ class Player {
 
 		socket.send("connected");
 
+		rooms[this.room].playerJoiningGame(this.socketId);
+
 		socket.on('message', (data) => this.handleClientMessage(data));
 		socket.on('close', () => this.leaveGame());
 	}
@@ -68,6 +70,7 @@ class Player {
 		try {
 			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
 		} catch (x) { }
+		rooms[this.room].playerLeavingGame(this.socketId);
 		this.resetPlayer();
 	}
 
