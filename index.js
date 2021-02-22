@@ -70,7 +70,9 @@ class Player {
 		try {
 			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
 		} catch (x) { }
-		rooms[this.room]?.playerLeavingGame(this.socketId);
+		try {
+			rooms[this.room].playerLeavingGame(this.socketId);
+		} catch (x) { }
 		this.resetPlayer();
 	}
 
