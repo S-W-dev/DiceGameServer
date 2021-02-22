@@ -237,6 +237,7 @@ ws.on('connection', (socket) => {
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 	room.addPlayer(socket, rooms.indexOf(room));
+	rooms.push(new Room(makeid(5)));
 	console.table(rooms);
 });
 
