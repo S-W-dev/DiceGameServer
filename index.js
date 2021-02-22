@@ -89,15 +89,15 @@ class Player {
 					case "join":
 						var matchingRooms = rooms.filter(room => room.roomCode == message.room_code);
 						if (matchingRooms.length == 1) {
-							leaveGame();
+							this.leaveGame();
 							matchingRooms[0].addPlayer(player.socket, rooms.indexOf(matchingRooms[0]));
 							console.table(rooms);
 						}
 						break;
 				}
 			} catch (x) {
-				console.log(x);
-				console.log(message);
+				///console.log(x);
+				console.log('Received: %s', message);
 			}
 		}
 	}
