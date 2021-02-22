@@ -92,7 +92,6 @@ class Player {
 						if (matchingRooms.length == 1) {
 							this.leaveGame();
 							matchingRooms[0].addPlayer(this.socket, rooms.indexOf(matchingRooms[0]));
-							console.table(rooms);
 						}
 						break;
 				}
@@ -239,8 +238,6 @@ ws.on('connection', (socket) => {
 	}
 	else room = rooms.filter(room => { return room.players.length < room.maxPlayers })[0];
 	room.addPlayer(socket, rooms.indexOf(room));
-	rooms.push(new Room(makeid(5)));
-	console.table(rooms);
 });
 
 function makeid(length) {
