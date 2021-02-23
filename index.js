@@ -34,7 +34,7 @@ PlayerStatus.LOST_BET = "Lost Bet";
 PlayerStatus.WON = "Won Game!";
 PlayerStatus.WON_BET = "Won Bet!";
 PlayerStatus.CONNECTING = "Connecting...";
-PlayerStatus.DISCONNECTED = "disconnected";
+PlayerStatus.DISCONNECTED = "Disconnected.";
 
 class Player {
 	constructor(socket, room) {
