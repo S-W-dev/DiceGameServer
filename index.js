@@ -77,7 +77,8 @@ class Player {
 	handleClientMessage(message) {
 		if (message == "connected") {
 			this.setStatus(PlayerStatus.WAITING);
-			console.log(message);
+			console.log("New player connected. Sending playerjoin event");
+			rooms[this.room].playerJoiningGame(this.socketId);
 		}
 		else {
 			try {
@@ -106,16 +107,9 @@ class Player {
 						break;
 				}
 			} catch (x) {
+				console.log(x);
+				console.log('Received: %s', message);
 			}
-			switch (message) {
-					case "connected":
-						console.log("New player connected. Sending playerjoin event");
-						rooms[this.room].playerJoiningGame(this.socketId);
-						break;
-					default:
-						console.log('Received: %s', message);
-						break;
-				}
 		}
 	}
 	setStatus(status) {
@@ -150,13 +144,13 @@ class Room {
 
 	playerLeavingGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({ type: "leave", socketId }));
+			player.socket.send(JSON.stringify({type:"leave", socketId}));
 		})
 	}
 
 	playerJoiningGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({ type: "join", socketId }));
+			player.socket.send(JSON.stringify({type:"join", socketId}));
 		})
 	}
 
@@ -175,11 +169,11 @@ class Room {
 							if (player.timeouts >= 3) {
 								player.leaveGame();
 							} else {
-								player.bet = 100;
-								player.choice = 1;
-								player.hasBet = true;
-								player.timeout = 0;
-								player.timeouts++;
+							player.bet = 100;
+							player.choice = 1;
+							player.hasBet = true;
+							player.timeout = 0;
+							player.timeouts++;
 							}
 						} else {
 							player.setStatus(PlayerStatus.BETTING);
