@@ -96,6 +96,9 @@ class Player {
 					case "name":
 						this.name = message.name;
 						break;
+					case "money":
+						this.money = message.money;
+						break;
 					case "join":
 						var matchingRooms = rooms.filter(room => room.roomCode == message.room_code);
 						if (matchingRooms.length == 1) {
