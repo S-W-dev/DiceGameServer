@@ -108,6 +108,7 @@ class Player {
 			} catch (x) {
 				switch (message) {
 					case "connected":
+						console.log("New player connected. Sending playerjoin event");
 						rooms[this.room].playerJoiningGame(this.socketId);
 						break;
 					default:
