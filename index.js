@@ -113,7 +113,6 @@ class Player {
 						rooms[this.room].playerJoiningGame(this.socketId);
 						break;
 					default:
-						console.log(x);
 						console.log('Received: %s', message);
 						break;
 				}
