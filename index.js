@@ -57,8 +57,6 @@ class Player {
 
 		socket.send("connected");
 
-		rooms[this.room].playerJoiningGame(this.socketId);
-
 		socket.on('message', (data) => this.handleClientMessage(data));
 		socket.on('close', () => this.leaveGame());
 	}
@@ -108,8 +106,15 @@ class Player {
 						break;
 				}
 			} catch (x) {
-				console.log(x);
-				console.log('Received: %s', message);
+				switch (message) {
+					case "connected":
+						rooms[this.room].playerJoiningGame(this.socketId);
+						break;
+					default:
+						console.log(x);
+						console.log('Received: %s', message);
+						break;
+				}
 			}
 		}
 	}
@@ -145,13 +150,13 @@ class Room {
 
 	playerLeavingGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({type:"leave", socketId}));
+			player.socket.send(JSON.stringify({ type: "leave", socketId }));
 		})
 	}
 
 	playerJoiningGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({type:"join", socketId}));
+			player.socket.send(JSON.stringify({ type: "join", socketId }));
 		})
 	}
 
@@ -170,11 +175,11 @@ class Room {
 							if (player.timeouts >= 3) {
 								player.leaveGame();
 							} else {
-							player.bet = 100;
-							player.choice = 1;
-							player.hasBet = true;
-							player.timeout = 0;
-							player.timeouts++;
+								player.bet = 100;
+								player.choice = 1;
+								player.hasBet = true;
+								player.timeout = 0;
+								player.timeouts++;
 							}
 						} else {
 							player.setStatus(PlayerStatus.BETTING);
