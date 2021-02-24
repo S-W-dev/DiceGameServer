@@ -145,13 +145,13 @@ class Room {
 
 	playerLeavingGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(Json.stringify({type:"leave", socketId}));
+			player.socket.send(JSON.stringify({type:"leave", socketId}));
 		})
 	}
 
 	playerJoiningGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(Json.stringify({type:"join", socketId}));
+			player.socket.send(JSON.stringify({type:"join", socketId}));
 		})
 	}
 
