@@ -69,7 +69,7 @@ class Player {
 			if (rooms[this.room].players.length <= 0) rooms.splice(rooms.indexOf(rooms[this.room]), 1);
 		} catch (x) { }
 		try {
-			rooms[this.room].playerLeavingGame(this.socketId);
+			//rooms[this.room].playerLeavingGame(this.socketId);
 		} catch (x) { }
 		this.resetPlayer();
 	}
@@ -78,7 +78,7 @@ class Player {
 		if (message == "connected") {
 			this.setStatus(PlayerStatus.WAITING);
 			console.log("New player connected. Sending playerjoin event");
-			rooms[this.room].playerJoiningGame(this.socketId);
+			//rooms[this.room].playerJoiningGame(this.socketId);
 		}
 		else {
 			try {
