@@ -47,6 +47,7 @@ class Player {
 		this.name = "Player";
 		this.status = PlayerStatus.CONNECTING;
 		this.money = 10000;
+		this.image = "https://concretegames.net/uploads/DefaultUser.png";
 
 		this.bet = 0;
 		this.choice = 0;
@@ -97,6 +98,9 @@ class Player {
 						break;
 					case "money":
 						this.money = message.money;
+						break;
+					case "image":
+						this.image = message.image;
 						break;
 					case "join":
 						var matchingRooms = rooms.filter(room => room.roomCode == message.room_code);
