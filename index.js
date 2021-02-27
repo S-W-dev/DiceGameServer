@@ -150,17 +150,18 @@ class Room {
 
 	playerLeavingGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({type:"leave", socketId}));
+			player.socket.send(JSON.stringify({ type: "leave", socketId }));
 		})
 	}
 
 	playerJoiningGame(socketId) {
 		this.players.forEach(player => {
-			player.socket.send(JSON.stringify({type:"join", socketId}));
+			player.socket.send(JSON.stringify({ type: "join", socketId }));
 		})
 	}
 
 	gameLoop() {
+		console.table(this);
 		if (this.players.length >= this.minPlayers && this.players.length <= this.maxPlayers && this.running) {
 
 			//stop game if everyone has lost
@@ -175,11 +176,11 @@ class Room {
 							if (player.timeouts >= 3) {
 								player.leaveGame();
 							} else {
-							player.bet = 100;
-							player.choice = 1;
-							player.hasBet = true;
-							player.timeout = 0;
-							player.timeouts++;
+								player.bet = 100;
+								player.choice = 1;
+								player.hasBet = true;
+								player.timeout = 0;
+								player.timeouts++;
 							}
 						} else {
 							player.setStatus(PlayerStatus.BETTING);
