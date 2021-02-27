@@ -101,6 +101,7 @@ class Player {
 						break;
 					case "image":
 						this.image = message.image;
+						console.log("updated image to " + message.image);
 						break;
 					case "join":
 						var matchingRooms = rooms.filter(room => room.roomCode == message.room_code);
