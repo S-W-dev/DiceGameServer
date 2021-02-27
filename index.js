@@ -98,6 +98,7 @@ class Player {
 						break;
 					case "money":
 						this.money = message.money;
+						console.log("updated money to " + message.money);
 						break;
 					case "image":
 						this.image = message.image;
