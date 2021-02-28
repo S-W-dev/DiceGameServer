@@ -193,9 +193,6 @@ class Room {
 				//roll the dice
 				let dice = ~~(Math.random() * 6) + 1;
 
-				let losses = 0
-				let winners = [];
-
 				this.roll = dice;
 
 				//loop through players that are still in the game
@@ -205,21 +202,15 @@ class Room {
 					if (player.choice != dice) {
 						player.setStatus(PlayerStatus.LOST_BET);
 						player.money -= player.bet;
-						losses += player.bet;
 						if (player.money <= 0) player.setStatus(PlayerStatus.LOST);
 					}
 
 					//player won bet
 					if (player.choice == dice) {
 						player.setStatus(PlayerStatus.WON_BET);
-						winners.push(player);
+						player.money += 6 * player.bet;
 					}
 
-				});
-
-				//split winnings among winners
-				winners.forEach(player => {
-					player.money += ~~(losses / winners.length)
 				});
 
 				//start next round
